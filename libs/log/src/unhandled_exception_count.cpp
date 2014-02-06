@@ -47,7 +47,9 @@ extern "C" void* _getptd();
 //! Returns the number of currently pending exceptions
 BOOST_LOG_API unsigned int unhandled_exception_count() BOOST_NOEXCEPT
 {
-#if defined(BOOST_LOG_HAS_CXA_GET_GLOBALS)
+#if defined(ANDROID)
+    return 0;
+#elif defined(BOOST_LOG_HAS_CXA_GET_GLOBALS)
     // Tested on {clang 3.2,GCC 3.5.6,GCC 4.1.2,GCC 4.4.6,GCC 4.4.7}x{x32,x64}
     return *(reinterpret_cast< const unsigned int* >(static_cast< const char* >(__cxa_get_globals()) + sizeof(void*))); // __cxa_eh_globals::uncaughtExceptions, x32 offset - 0x4, x64 - 0x8
 #elif defined(BOOST_LOG_HAS_GETPTD)
